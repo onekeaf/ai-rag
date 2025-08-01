@@ -30,7 +30,7 @@ public class OllamaController implements IAiService {
     @Override
     @GetMapping("/generate")
     public ChatResponse generate(@RequestParam String model, @RequestParam String message) {
-        return ollamaClient.call(new Prompt(model, OllamaOptions.create().withModel(model)));
+        return ollamaClient.call(new Prompt(message, OllamaOptions.create().withModel(model)));
     }
 
     /**
@@ -39,6 +39,6 @@ public class OllamaController implements IAiService {
     @Override
     @GetMapping("/generate_stream")
     public Flux<ChatResponse> generateStream(@RequestParam String model, @RequestParam String message) {
-        return ollamaClient.stream(new Prompt(model, OllamaOptions.create().withModel(model)));
+        return ollamaClient.stream(new Prompt(message, OllamaOptions.create().withModel(model)));
     }
 }

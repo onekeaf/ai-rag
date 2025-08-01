@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI智能助手</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .ai-gradient {
+            background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        }
+        .message-user {
+            background-color: #2563eb;
+            color: white;
+            border-radius: 18px 18px 4px 18px;
+        }
+        .message-ai {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            border-radius: 18px 18px 18px 4px;
+        }
+        .input-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+<div class="flex flex-col h-screen">
+    <!-- 顶部导航栏 -->
+    <header class="ai-gradient py-4 px-6 shadow-md">
+        <div class="container mx-auto flex items-center">
+            <div class="h-8 w-8 rounded-full bg-white flex items-center justify-center mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-blue-600">
+                    <path fill-rule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9-5.322 0-9.75 3.97-9.75 9 0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <h1 class="text-white text-xl font-semibold">AI智能助手</h1>
+        </div>
+    </header>
+
+    <!-- 消息容器 -->
+    <div id="messageContainer" class="flex-1 overflow-y-auto p-6 space-y-4 container mx-auto max-w-3xl">
+        <!-- 欢迎消息 -->
+        <div class="flex justify-start">
+            <div class="message-ai p-4 max-w-[80%]">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-gray-600">
+                            <path fill-rule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9-5.322 0-9.75 3.97-9.75 9 0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-medium">AI助手</p>
+                        <p class="mt-1">你好！我是AI智能助手，有什么可以帮你的吗？</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 输入区域 -->
+    <div class="bg-white border-t border-gray-200 py-4 px-6 input-shadow">
+        <div class="container mx-auto max-w-3xl">
+            <div class="flex items-center space-x-3">
+                <div class="flex-1 relative">
+                    <input
+                            type="text"
+                            id="messageInput"
+                            placeholder="输入消息..."
+                            class="w-full p-3 pl-4 pr-12 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            onkeypress="handleKeyPress(event)"
+                    >
+                    <button
+                            onclick="sendMessage()"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-gray-500 hover:text-blue-500"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                            <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <p class="text-xs text-gray-500 mt-2 text-center">AI智能助手可能会产生不准确的信息</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 添加消息到容器
+    function addMessage(content, isUser = false) {
+        const container = document.getElementById('messageContainer');
+        const messageDiv = document.createElement('div');
+
+        messageDiv.className = `flex ${isUser ? 'justify-end' : 'justify-start'}`;
+
+        if (isUser) {
+            messageDiv.innerHTML = `
+                <div class="message-user p-4 max-w-[80%]">
+                    <p>${content}</p>
+                </div>
+            `;
+        } else {
+            messageDiv.innerHTML = `
+                <div class="message-ai p-4 max-w-[80%]">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-gray-600">
+                                <path fill-rule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9-5.322 0-9.75 3.97-9.75 9 0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="font-medium">AI助手</p>
+                            <p class="mt-1">${content}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        container.appendChild(messageDiv);
+        container.scrollTop = container.scrollHeight; // 滚动到底部
+    }
+
+    // 发送消息
+    async function sendMessage() {
+        const input = document.getElementById('messageInput');
+        const message = input.value.trim();
+
+        if (!message) return;
+
+        // 清空输入框
+        input.value = '';
+
+        // 添加用户消息
+        addMessage(message, true);
+
+        // 添加初始AI消息占位
+        addMessage('<span class="animate-pulse">▍</span>');
+
+        // 构建API URL
+        const apiUrl = `http://localhost:8090/api/v1/ollama/generate_stream?model=deepseek-r1:1.5b&message=${encodeURIComponent(message)}`;
+
+        // 使用EventSource接收流式响应
+        const eventSource = new EventSource(apiUrl);
+        let buffer = '';
+
+        eventSource.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                const content = data.result?.output?.content || '';
+                const finishReason = data.result?.metadata?.finishReason;
+
+                if (content) {
+                    buffer += content;
+                    updateLastMessage(buffer + '<span class="animate-pulse">▍</span>');
+                }
+
+                if (finishReason === 'STOP') {
+                    eventSource.close();
+                    updateLastMessage(buffer); // 移除加载动画
+                }
+            } catch (error) {
+                console.error('解析错误:', error);
+            }
+        };
+
+        eventSource.onerror = (error) => {
+            console.error('EventSource错误:', error);
+            eventSource.close();
+        };
+    }
+
+    // 更新最后一条消息
+    function updateLastMessage(content) {
+        const container = document.getElementById('messageContainer');
+        const lastMessage = container.lastChild.querySelector('.message-ai');
+        if (lastMessage) {
+            const contentDiv = lastMessage.querySelector('p:last-child');
+            if (contentDiv) {
+                contentDiv.innerHTML = content;
+            }
+        }
+        container.scrollTop = container.scrollHeight;
+    }
+
+    // 回车发送
+    function handleKeyPress(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            sendMessage();
+        }
+    }
+</script>
+</body>
+</html>
